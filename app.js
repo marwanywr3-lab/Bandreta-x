@@ -2,7 +2,6 @@
  * منطق تشغيل الموقع وقراءة الإعدادات من ملف config.js
  */
 
-// مكتبة الأيقونات المخصصة بنفس الأسلوب المرسوم الموجود في التصميم المرجعي
 const CUSTOM_ICONS = {
   youtube: `
     <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -13,11 +12,8 @@ const CUSTOM_ICONS = {
   potato: `
     <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
       <rect x="4" y="4" width="40" height="40" rx="10" fill="#FFC800"/>
-      <!-- شخصية بندر بطاطا الكرتونية -->
       <path d="M16 36C15 29 15.5 17 24 16.5C32.5 17 33 29 32 36H16Z" fill="#FFFFFF" stroke="#111111" stroke-width="2.3" stroke-linejoin="round"/>
-      <!-- الشعر -->
       <path d="M15.8 23.5C15.5 17.5 19.5 14 25.5 14.5C30.5 15 33 18.5 32.5 23C30.5 20.5 27.5 19.5 24 20.5C20.5 21.5 18 22.5 15.8 23.5Z" fill="#111111"/>
-      <!-- العيون والابتسامة -->
       <circle cx="21.5" cy="24.5" r="1.4" fill="#111111"/>
       <circle cx="26.5" cy="24.5" r="1.4" fill="#111111"/>
       <path d="M20.5 28.5C22.2 30.5 25.8 30.5 27.5 28.5" stroke="#111111" stroke-width="2" stroke-linecap="round"/>
@@ -27,7 +23,6 @@ const CUSTOM_ICONS = {
   store: `
     <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
       <rect x="4" y="4" width="40" height="40" rx="10" fill="#0A0A0A" stroke="rgba(255,255,255,0.12)" stroke-width="1.5"/>
-      <!-- حرف X بأسلوب فرشاة حادة مثل المتجر -->
       <path d="M13 13L35 35" stroke="#FFFFFF" stroke-width="4.5" stroke-linecap="round"/>
       <path d="M35 13L13 35" stroke="#FFFFFF" stroke-width="4.5" stroke-linecap="round"/>
       <path d="M11 25C18 21 31 20 38 24" stroke="#3A3A3A" stroke-width="2.6" stroke-linecap="round"/>
@@ -47,7 +42,6 @@ const CUSTOM_ICONS = {
   `,
   tiktok: `
     <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <!-- تأثير الألوان المزدوج للتيك توك -->
       <path d="M32.5 10H27.5V28.5C27.5 31.3 25.3 33.5 22.5 33.5C19.7 33.5 17.5 31.3 17.5 28.5C17.5 25.8 19.6 23.6 22.3 23.5V18.4C16.8 18.5 12.4 23 12.4 28.5C12.4 34.1 16.9 38.6 22.5 38.6C28.1 38.6 32.6 34.1 32.6 28.5V19C34.6 20.4 37 21.3 39.6 21.3V16.3C35.7 16.3 32.5 13.5 32.5 10Z" fill="#00F2FE" transform="translate(-1.5, -1)"/>
       <path d="M32.5 10H27.5V28.5C27.5 31.3 25.3 33.5 22.5 33.5C19.7 33.5 17.5 31.3 17.5 28.5C17.5 25.8 19.6 23.6 22.3 23.5V18.4C16.8 18.5 12.4 23 12.4 28.5C12.4 34.1 16.9 38.6 22.5 38.6C28.1 38.6 32.6 34.1 32.6 28.5V19C34.6 20.4 37 21.3 39.6 21.3V16.3C35.7 16.3 32.5 13.5 32.5 10Z" fill="#FF0050" transform="translate(1.5, 1)"/>
       <path d="M32.5 10H27.5V28.5C27.5 31.3 25.3 33.5 22.5 33.5C19.7 33.5 17.5 31.3 17.5 28.5C17.5 25.8 19.6 23.6 22.3 23.5V18.4C16.8 18.5 12.4 23 12.4 28.5C12.4 34.1 16.9 38.6 22.5 38.6C28.1 38.6 32.6 34.1 32.6 28.5V19C34.6 20.4 37 21.3 39.6 21.3V16.3C35.7 16.3 32.5 13.5 32.5 10Z" fill="#111111" stroke="#FFFFFF" stroke-width="1.2"/>
@@ -88,18 +82,40 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function initSite() {
-  // 1. تحديث العنوان وجملة الترحيب والتذييل
   document.title = SITE_CONFIG.pageTitle;
+
+  // الاسم الرئيسي
+  const nameEl = document.getElementById("profile-name");
+  if (nameEl) nameEl.textContent = SITE_CONFIG.profileName;
+
+  // النبذة التعريفية
+  const bioEl = document.getElementById("profile-bio");
+  if (bioEl && Array.isArray(SITE_CONFIG.bioLines)) {
+    bioEl.innerHTML = SITE_CONFIG.bioLines
+      .map((line) => `<p>${line}</p>`)
+      .join("");
+  }
+
+  // زر الإيميل
+  const emailBtn = document.getElementById("email-btn");
+  if (emailBtn && SITE_CONFIG.email) {
+    emailBtn.href = `mailto:${SITE_CONFIG.email}`;
+    emailBtn.setAttribute("aria-label", `إرسال بريد إلكتروني إلى ${SITE_CONFIG.email}`);
+    emailBtn.title = SITE_CONFIG.email;
+  }
+
+  // جملة الترحيب
   const welcomeEl = document.getElementById("welcome-text");
   if (welcomeEl) welcomeEl.textContent = SITE_CONFIG.welcomeText;
 
+  // التذييل
   const footerEl = document.getElementById("footer-text");
   if (footerEl) footerEl.textContent = SITE_CONFIG.footerText;
 
-  // 2. بناء البنر العلوي ونظام التقليب
+  // البنر الطولي
   initBannerCarousel();
 
-  // 3. بناء قائمة الروابط
+  // قائمة الروابط
   initLinksList();
 }
 
@@ -116,7 +132,6 @@ function initBannerCarousel() {
   let currentIndex = 0;
   let autoPlayTimer = null;
 
-  // إنشاء الشرائح والنقاط
   track.innerHTML = "";
   dotsContainer.innerHTML = "";
 
@@ -131,24 +146,34 @@ function initBannerCarousel() {
       slideEl.rel = "noopener noreferrer";
     }
 
-    if (item.fitMode === "cover") {
-      slideEl.innerHTML = `
-        <img src="${item.image}" alt="${item.alt || ""}" class="banner-full-img" />
-        ${hasLink ? `<span class="banner-link-badge">اضغط للفتح ↗</span>` : ""}
-      `;
-    } else {
-      // الوضع الافتراضي: الصورة المربعة واضحة في الوسط + خلفية مموهة يمين ويسار
-      slideEl.innerHTML = `
-        <div class="banner-blur-bg" style="background-image: url('${item.image}')"></div>
-        <div class="banner-vignette"></div>
-        <img src="${item.image}" alt="${item.alt || ""}" class="banner-main-img" />
-        ${hasLink ? `<span class="banner-link-badge">اضغط للفتح ↗</span>` : ""}
-      `;
+    const img = document.createElement("img");
+    img.src = item.image;
+    img.alt = item.alt || "";
+    img.className = "banner-img";
+    // مسار احتياطي تلقائي في حال تم وضع الصورة داخل مجلد assets
+    img.onerror = function () {
+      if (!this.dataset.retried) {
+        this.dataset.retried = "true";
+        const fileName = item.image.split("/").pop();
+        this.src = `./assets/${fileName}`;
+      }
+    };
+
+    const overlay = document.createElement("div");
+    overlay.className = "banner-overlay-gradient";
+
+    slideEl.appendChild(img);
+    slideEl.appendChild(overlay);
+
+    if (hasLink) {
+      const badge = document.createElement("span");
+      badge.className = "banner-link-badge";
+      badge.textContent = "اضغط للفتح ↗";
+      slideEl.appendChild(badge);
     }
 
     track.appendChild(slideEl);
 
-    // إنشاء نقطة المؤشر
     const dot = document.createElement("button");
     dot.className = "banner-dot" + (index === 0 ? " active" : "");
     dot.setAttribute("aria-label", `الشريحة ${index + 1}`);
@@ -159,7 +184,6 @@ function initBannerCarousel() {
     dotsContainer.appendChild(dot);
   });
 
-  // إظهار أو إخفاء أدوات التقليب حسب عدد الصور والإعدادات
   const showControls =
     banners.length > 1 || SITE_CONFIG.bannerSettings?.showControlsOnSingle;
 
@@ -178,7 +202,6 @@ function initBannerCarousel() {
     if (index >= banners.length) index = 0;
     currentIndex = index;
 
-    // ملاحظة: الصفحة RTL، لذا التحرك لليمين/اليسار يعتمد على اتجاه الـ track
     track.style.transform = `translateX(${currentIndex * 100}%)`;
 
     const allDots = dotsContainer.querySelectorAll(".banner-dot");
@@ -197,7 +220,6 @@ function initBannerCarousel() {
     restartAutoPlay();
   });
 
-  // دعم السحب باللمس على الجوال (Swipe)
   let touchStartX = 0;
   viewport.addEventListener(
     "touchstart",
@@ -272,7 +294,6 @@ function initLinksList() {
       </div>
     `;
 
-    // عند الضغط على النقاط الثلاث يتم نسخ الرابط مباشرة مع إشعار أنيق دون فتح الصفحة
     const copyBtn = card.querySelector(".link-action-dots");
     copyBtn.addEventListener("click", (e) => {
       e.preventDefault();

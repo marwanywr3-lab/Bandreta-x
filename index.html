@@ -4,17 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>BanderitaX | الموقع الرسمي لبندريتا</title>
-  <link rel="icon" type="image/jpeg" href="assets/logo.jpg" />
-  <!-- خطوط عربية عصرية -->
+  <link rel="icon" type="image/jpeg" href="./logo.jpg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="./style.css" />
 </head>
 <body>
   <main class="page-wrapper">
-    <!-- قسم البنر العلوي القابل للتقليب -->
-    <section class="hero-banner-section" aria-label="البنر الرئيسي">
+    <!-- الهيدر الطولي (صورة البنر + الاسم + النبذة + أيقونة الإيميل + الترحيب) -->
+    <header class="hero-header">
       <div class="banner-viewport" id="banner-viewport">
         <div class="banner-track" id="banner-track"></div>
 
@@ -33,11 +32,36 @@
 
       <!-- نقاط المؤشر -->
       <div class="banner-dots hidden" id="banner-dots"></div>
-    </section>
 
-    <!-- جملة الترحيب -->
-    <header class="welcome-section">
-      <h1 class="welcome-title" id="welcome-text">حياكم الله في الموقع الرسمي لبندريتا ❤️</h1>
+      <!-- معلومات البروفايل أسفل الصورة -->
+      <div class="profile-info">
+        <h1 class="profile-name" id="profile-name">بندريتا</h1>
+
+        <div class="profile-bio" id="profile-bio">
+          <p>صانع محتوى في فريق فالكونز</p>
+          <p>أفضل صانع محتوى لعام 2019</p>
+          <p>أفضل صانع محتوى لعام 2021</p>
+          <p>أفضل صانع محتوى لعام 2023</p>
+        </div>
+
+        <!-- أيقونة الإيميل -->
+        <div class="social-actions-row">
+          <a
+            id="email-btn"
+            class="email-icon-btn"
+            href="mailto:BanderitaX.ads@gmail.com"
+            aria-label="إرسال بريد إلكتروني إلى BanderitaX.ads@gmail.com"
+            title="BanderitaX.ads@gmail.com"
+          >
+            <svg width="23" height="23" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/>
+            </svg>
+          </a>
+        </div>
+
+        <!-- جملة الترحيب -->
+        <p class="welcome-text" id="welcome-text">حياكم الله في الموقع الرسمي لبندريتا ❤️</p>
+      </div>
     </header>
 
     <!-- قائمة الروابط والمنصات -->
@@ -52,8 +76,7 @@
   <!-- إشعار نسخ الرابط -->
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <!-- ملف الإعدادات أولاً لسهولة التعديل ثم ملف التشغيل -->
-  <script src="config.js"></script>
-  <script src="app.js"></script>
+  <script src="./config.js"></script>
+  <script src="./app.js"></script>
 </body>
 </html>
