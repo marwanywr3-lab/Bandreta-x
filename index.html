@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BanderitaX | الموقع الرسمي لبندريتا</title>
+  <link rel="icon" type="image/jpeg" href="assets/logo.jpg" />
+  <!-- خطوط عربية عصرية -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="page-wrapper">
+    <!-- قسم البنر العلوي القابل للتقليب -->
+    <section class="hero-banner-section" aria-label="البنر الرئيسي">
+      <div class="banner-viewport" id="banner-viewport">
+        <div class="banner-track" id="banner-track"></div>
+
+        <!-- أسهم التقليب (تظهر تلقائياً عند إضافة أكثر من صورة في config.js) -->
+        <button class="banner-nav-btn prev hidden" id="banner-prev" aria-label="السابق">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
+        <button class="banner-nav-btn next hidden" id="banner-next" aria-label="التالي">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+      </div>
+
+      <!-- نقاط المؤشر -->
+      <div class="banner-dots hidden" id="banner-dots"></div>
+    </section>
+
+    <!-- جملة الترحيب -->
+    <header class="welcome-section">
+      <h1 class="welcome-title" id="welcome-text">حياكم الله في الموقع الرسمي لبندريتا ❤️</h1>
+    </header>
+
+    <!-- قائمة الروابط والمنصات -->
+    <section class="links-list" id="links-list" aria-label="روابط التواصل والمتاجر"></section>
+
+    <!-- التذييل -->
+    <footer class="site-footer">
+      <p id="footer-text">© BanderitaX - جميع الحقوق محفوظة</p>
+    </footer>
+  </main>
+
+  <!-- إشعار نسخ الرابط -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <!-- ملف الإعدادات أولاً لسهولة التعديل ثم ملف التشغيل -->
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
