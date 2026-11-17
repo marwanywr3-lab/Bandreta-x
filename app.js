@@ -84,11 +84,9 @@ document.addEventListener("DOMContentLoaded", () => {
 function initSite() {
   document.title = SITE_CONFIG.pageTitle;
 
-  // الاسم الرئيسي
   const nameEl = document.getElementById("profile-name");
   if (nameEl) nameEl.textContent = SITE_CONFIG.profileName;
 
-  // النبذة التعريفية
   const bioEl = document.getElementById("profile-bio");
   if (bioEl && Array.isArray(SITE_CONFIG.bioLines)) {
     bioEl.innerHTML = SITE_CONFIG.bioLines
@@ -96,7 +94,6 @@ function initSite() {
       .join("");
   }
 
-  // زر الإيميل
   const emailBtn = document.getElementById("email-btn");
   if (emailBtn && SITE_CONFIG.email) {
     emailBtn.href = `mailto:${SITE_CONFIG.email}`;
@@ -104,18 +101,13 @@ function initSite() {
     emailBtn.title = SITE_CONFIG.email;
   }
 
-  // جملة الترحيب
   const welcomeEl = document.getElementById("welcome-text");
   if (welcomeEl) welcomeEl.textContent = SITE_CONFIG.welcomeText;
 
-  // التذييل
   const footerEl = document.getElementById("footer-text");
   if (footerEl) footerEl.textContent = SITE_CONFIG.footerText;
 
-  // البنر الطولي
   initBannerCarousel();
-
-  // قائمة الروابط
   initLinksList();
 }
 
@@ -150,7 +142,6 @@ function initBannerCarousel() {
     img.src = item.image;
     img.alt = item.alt || "";
     img.className = "banner-img";
-    // مسار احتياطي تلقائي في حال تم وضع الصورة داخل مجلد assets
     img.onerror = function () {
       if (!this.dataset.retried) {
         this.dataset.retried = "true";
@@ -168,7 +159,7 @@ function initBannerCarousel() {
     if (hasLink) {
       const badge = document.createElement("span");
       badge.className = "banner-link-badge";
-      badge.textContent = "اضغط للفتح ↗";
+      badge.textContent = item.badgeText || "اضغط للفتح ↗";
       slideEl.appendChild(badge);
     }
 
@@ -220,11 +211,22 @@ function initBannerCarousel() {
     restartAutoPlay();
   });
 
+  // إيقاف التقليب التلقائي مؤقتاً عند الوقوف بالماوس أو اللمس
+  if (SITE_CONFIG.bannerSettings?.pauseOnHover) {
+    viewport.addEventListener("mouseenter", () => {
+      if (autoPlayTimer) clearInterval(autoPlayTimer);
+    });
+    viewport.addEventListener("mouseleave", () => {
+      restartAutoPlay();
+    });
+  }
+
   let touchStartX = 0;
   viewport.addEventListener(
     "touchstart",
     (e) => {
       touchStartX = e.changedTouches[0].screenX;
+      if (autoPlayTimer) clearInterval(autoPlayTimer);
     },
     { passive: true }
   );
@@ -241,8 +243,8 @@ function initBannerCarousel() {
         } else {
           goToSlide(currentIndex - 1);
         }
-        restartAutoPlay();
       }
+      restartAutoPlay();
     },
     { passive: true }
   );
@@ -251,7 +253,7 @@ function initBannerCarousel() {
     if (banners.length > 1 && SITE_CONFIG.bannerSettings?.autoPlay) {
       autoPlayTimer = setInterval(() => {
         goToSlide(currentIndex + 1);
-      }, SITE_CONFIG.bannerSettings.intervalMs || 4500);
+      }, SITE_CONFIG.bannerSettings.intervalMs || 3800);
     }
   }
 
@@ -280,26 +282,53 @@ function initLinksList() {
       card.style.setProperty("--hover-accent", item.accentColor);
     }
 
-    const iconSvg = CUSTOM_ICONS[item.iconType] || CUSTOM_ICONS.store;
+    const iconWrap = document.createElement("div");
+    iconWrap.className = "link-icon-wrap";
 
-    card.innerHTML = `
-      <div class="link-icon-wrap">${iconSvg}</div>
-      <span class="link-title">${item.title}</span>
-      <div class="link-action-dots" title="نسخ الرابط" data-copy-url="${item.url}">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-          <circle cx="12" cy="5" r="2"/>
-          <circle cx="12" cy="12" r="2"/>
-          <circle cx="12" cy="19" r="2"/>
-        </svg>
-      </div>
+    if (item.iconImage) {
+      const img = document.createElement("img");
+      img.src = item.iconImage;
+      img.alt = item.title;
+      img.className = "link-icon-img";
+      img.onerror = function () {
+        if (!this.dataset.retried) {
+          this.dataset.retried = "true";
+          const fileName = item.iconImage.split("/").pop();
+          this.src = `./assets/${fileName}`;
+        } else {
+          iconWrap.innerHTML = CUSTOM_ICONS[item.iconType] || CUSTOM_ICONS.store;
+        }
+      };
+      iconWrap.appendChild(img);
+    } else {
+      iconWrap.innerHTML = CUSTOM_ICONS[item.iconType] || CUSTOM_ICONS.store;
+    }
+
+    const titleSpan = document.createElement("span");
+    titleSpan.className = "link-title";
+    titleSpan.textContent = item.title;
+
+    const dotsDiv = document.createElement("div");
+    dotsDiv.className = "link-action-dots";
+    dotsDiv.title = "نسخ الرابط";
+    dotsDiv.dataset.copyUrl = item.url;
+    dotsDiv.innerHTML = `
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+        <circle cx="12" cy="5" r="2"/>
+        <circle cx="12" cy="12" r="2"/>
+        <circle cx="12" cy="19" r="2"/>
+      </svg>
     `;
 
-    const copyBtn = card.querySelector(".link-action-dots");
-    copyBtn.addEventListener("click", (e) => {
+    dotsDiv.addEventListener("click", (e) => {
       e.preventDefault();
       e.stopPropagation();
       copyToClipboard(item.url, item.title);
     });
+
+    card.appendChild(iconWrap);
+    card.appendChild(titleSpan);
+    card.appendChild(dotsDiv);
 
     listContainer.appendChild(card);
   });

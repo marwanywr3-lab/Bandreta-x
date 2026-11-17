@@ -19,7 +19,7 @@ const SITE_CONFIG = {
     "أفضل صانع محتوى لعام 2023"
   ],
 
-  // البريد الإلكتروني للتواصل والإعلانات (يفتح تطبيق البريد عند الضغط على الأيقونة)
+  // البريد الإلكتروني للتواصل والإعلانات
   email: "BanderitaX.ads@gmail.com",
 
   // جملة الترحيب أسفل أيقونة الإيميل
@@ -30,29 +30,38 @@ const SITE_CONFIG = {
 
   // إعدادات البنر الطولي القابل للتقليب (Carousel)
   bannerSettings: {
-    autoPlay: true,               // تشغيل التقليب التلقائي عند وجود أكثر من صورة
-    intervalMs: 4500,             // مدة بقاء كل صورة بالملي ثانية
-    showControlsOnSingle: false   // إظهار الأسهم والنقاط حتى لو كانت صورة واحدة (true / false)
+    autoPlay: true,               // تشغيل التقليب التلقائي
+    intervalMs: 3800,             // سرعة التقليب بالملي ثانية (3800 = 3.8 ثانية لسهولة القراءة والضغط)
+    pauseOnHover: true,           // إيقاف التقليب مؤقتاً عند لمس البنر أو الوقوف عليه بالماوس
+    showControlsOnSingle: false   // إظهار الأسهم والنقاط تلقائياً عند وجود أكثر من صورة
   },
 
   /**
-   * قائمة صور البنر العلوي الطولي:
-   * - image: مسار الصورة (يفضل وضع الصور في المجلد الرئيسي أو داخل assets)
+   * قائمة صور البنر العلوي القابل للتقليب والضغط:
+   * - image: مسار الصورة
    * - alt: وصف الصورة
-   * - link: رابط يفتح عند الضغط على البنر (اتركه "" إذا كانت صورة بدون رابط)
+   * - link: الرابط الذي يفتح عند الضغط على الشريحة
+   * - badgeText: نص الشارة التوضيحية أعلى البنر
    */
   banners: [
     {
       image: "./logo.jpg",
-      alt: "شعار بندريتا الرسمي",
-      link: ""
+      alt: "قناة بندريتا على يوتيوب",
+      link: "https://www.youtube.com/banderitax",
+      badgeText: "قناة بندريتا على YouTube ↗"
+    },
+    {
+      image: "./potato.jpg",
+      alt: "بندر بطاطا - Bander's Potato",
+      link: "https://www.banderspotato.com/",
+      badgeText: "بندر بطاطا | اطلب الآن ↗"
+    },
+    {
+      image: "./store.jpg",
+      alt: "متجر بندريتا - banderitax.store",
+      link: "https://banderitax.store/",
+      badgeText: "متجر بندريتا الرسمي ↗"
     }
-    // مثال لإضافة صورة بنر جديدة قابلة للضغط مستقبلاً (احذف علامتي // لتفعيله):
-    // ,{
-    //   image: "./banner2.jpg",
-    //   alt: "إعلان جديد",
-    //   link: "https://banderitax.store/"
-    // }
   ],
 
   /**
@@ -68,14 +77,16 @@ const SITE_CONFIG = {
     {
       title: "Bander's Potato | بندر بطاطا",
       url: "https://www.banderspotato.com/",
+      iconImage: "./potato.jpg",
       iconType: "potato",
       accentColor: "#FFC800"
     },
     {
       title: "banderitax.store",
       url: "https://banderitax.store/",
+      iconImage: "./store.jpg",
       iconType: "store",
-      accentColor: "#FFFFFF"
+      accentColor: "#D92B2B"
     },
     {
       title: "Join the BanderitaX Discord Server!",
